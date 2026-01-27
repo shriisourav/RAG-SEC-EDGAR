@@ -25,7 +25,7 @@ EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 # LLM Configuration (supports OpenAI and Gemini)
 LLM_PROVIDER = "gemini"  # "openai" or "gemini"
 OPENAI_MODEL = "gpt-4o-mini"
-GEMINI_MODEL = "gemini-2.0-flash"
+GEMINI_MODEL = "gemini-1.5-flash-latest"
 
 # Retrieval settings
 DEFAULT_K = 5
