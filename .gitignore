@@ -10,10 +10,10 @@ __pycache__/
 venv/
 env/
 
-# Data files (large HTML/TXT files)
+# Data files (large files)
 data/raw_html/
 data/raw_txt/
-# Note: chroma_db is included for deployment
+data/chroma_db/
 
 # Keep structure but ignore large files
 !data/.gitkeep

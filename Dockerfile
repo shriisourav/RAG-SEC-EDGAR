@@ -22,5 +22,5 @@ RUN mkdir -p data/raw_html data/raw_txt data/chroma_db data/evaluation
 # Expose port
 EXPOSE 7860
 
-# Hugging Face Spaces uses port 7860
-CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "7860"]
+# Use start.py which handles data setup
+CMD ["python", "start.py"]
