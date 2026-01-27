@@ -1,0 +1,257 @@
+[
+  {
+    "id": "RF-001",
+    "question": "What are JPMorgan Chase's main risk factors?",
+    "expected_company": "JPM",
+    "expected_section": "Risk Factors",
+    "expected_keywords": [
+      "risk",
+      "credit",
+      "market",
+      "operational"
+    ],
+    "difficulty": "easy",
+    "category": "risk_factors"
+  },
+  {
+    "id": "RF-002",
+    "question": "What credit risks does Goldman Sachs face?",
+    "expected_company": "GS",
+    "expected_section": "Credit Risk",
+    "expected_keywords": [
+      "credit",
+      "counterparty",
+      "default",
+      "exposure"
+    ],
+    "difficulty": "easy",
+    "category": "risk_factors"
+  },
+  {
+    "id": "RF-003",
+    "question": "How does UBS describe its operational risks?",
+    "expected_company": "UBS",
+    "expected_section": "Operational Risk",
+    "expected_keywords": [
+      "operational",
+      "process",
+      "systems",
+      "controls"
+    ],
+    "difficulty": "medium",
+    "category": "risk_factors"
+  },
+  {
+    "id": "RF-004",
+    "question": "What market risks are disclosed in the 10-K filings?",
+    "expected_company": null,
+    "expected_section": "Market Risk",
+    "expected_keywords": [
+      "market",
+      "trading",
+      "volatility",
+      "prices"
+    ],
+    "difficulty": "medium",
+    "category": "risk_factors"
+  },
+  {
+    "id": "RF-005",
+    "question": "Compare the regulatory risks across JPMorgan and Goldman Sachs",
+    "expected_company": null,
+    "expected_section": "Risk Factors",
+    "expected_keywords": [
+      "regulatory",
+      "compliance",
+      "Basel",
+      "capital"
+    ],
+    "difficulty": "hard",
+    "category": "risk_factors"
+  },
+  {
+    "id": "LQ-001",
+    "question": "How does JPMorgan manage its liquidity risk?",
+    "expected_company": "JPM",
+    "expected_section": "Liquidity",
+    "expected_keywords": [
+      "liquidity",
+      "funding",
+      "cash",
+      "requirements"
+    ],
+    "difficulty": "easy",
+    "category": "liquidity"
+  },
+  {
+    "id": "LQ-002",
+    "question": "What are UBS's liquidity requirements under Basel III?",
+    "expected_company": "UBS",
+    "expected_section": "Liquidity",
+    "expected_keywords": [
+      "liquidity",
+      "Basel",
+      "LCR",
+      "NSFR",
+      "ratio"
+    ],
+    "difficulty": "medium",
+    "category": "liquidity"
+  },
+  {
+    "id": "LQ-003",
+    "question": "What liquidity buffers do the banks maintain?",
+    "expected_company": null,
+    "expected_section": "Liquidity",
+    "expected_keywords": [
+      "buffer",
+      "reserve",
+      "HQLA",
+      "liquid assets"
+    ],
+    "difficulty": "medium",
+    "category": "liquidity"
+  },
+  {
+    "id": "LQ-004",
+    "question": "How do funding sources differ between the three banks?",
+    "expected_company": null,
+    "expected_section": "Liquidity",
+    "expected_keywords": [
+      "funding",
+      "deposits",
+      "borrowing",
+      "sources"
+    ],
+    "difficulty": "hard",
+    "category": "liquidity"
+  },
+  {
+    "id": "CR-001",
+    "question": "What are the regulatory capital requirements for JPMorgan?",
+    "expected_company": "JPM",
+    "expected_section": "General",
+    "expected_keywords": [
+      "capital",
+      "regulatory",
+      "CET1",
+      "tier 1"
+    ],
+    "difficulty": "easy",
+    "category": "capital"
+  },
+  {
+    "id": "CR-002",
+    "question": "How does Goldman Sachs meet Basel III capital requirements?",
+    "expected_company": "GS",
+    "expected_section": "General",
+    "expected_keywords": [
+      "Basel",
+      "capital",
+      "ratio",
+      "requirements"
+    ],
+    "difficulty": "medium",
+    "category": "capital"
+  },
+  {
+    "id": "CR-003",
+    "question": "What stress testing requirements do these banks face?",
+    "expected_company": null,
+    "expected_section": null,
+    "expected_keywords": [
+      "stress",
+      "test",
+      "CCAR",
+      "scenario"
+    ],
+    "difficulty": "medium",
+    "category": "capital"
+  },
+  {
+    "id": "CR-004",
+    "question": "What are the G-SIB buffer requirements mentioned in the filings?",
+    "expected_company": null,
+    "expected_section": "General",
+    "expected_keywords": [
+      "G-SIB",
+      "buffer",
+      "systemic",
+      "surcharge"
+    ],
+    "difficulty": "hard",
+    "category": "capital"
+  },
+  {
+    "id": "BO-001",
+    "question": "What are JPMorgan's main business segments?",
+    "expected_company": "JPM",
+    "expected_section": "General",
+    "expected_keywords": [
+      "segment",
+      "consumer",
+      "commercial",
+      "investment"
+    ],
+    "difficulty": "easy",
+    "category": "business"
+  },
+  {
+    "id": "BO-002",
+    "question": "How does Goldman Sachs generate revenue?",
+    "expected_company": "GS",
+    "expected_section": "General",
+    "expected_keywords": [
+      "revenue",
+      "trading",
+      "fees",
+      "investment banking"
+    ],
+    "difficulty": "medium",
+    "category": "business"
+  },
+  {
+    "id": "BO-003",
+    "question": "What geographic markets does UBS operate in?",
+    "expected_company": "UBS",
+    "expected_section": "General",
+    "expected_keywords": [
+      "geographic",
+      "global",
+      "region",
+      "market"
+    ],
+    "difficulty": "medium",
+    "category": "business"
+  },
+  {
+    "id": "HT-001",
+    "question": "What was Apple's revenue in 2024?",
+    "expected_company": null,
+    "expected_section": null,
+    "expected_keywords": [],
+    "should_refuse": true,
+    "difficulty": "easy",
+    "category": "hallucination_test"
+  },
+  {
+    "id": "HT-002",
+    "question": "What is JPMorgan's stock price prediction for 2026?",
+    "expected_company": null,
+    "expected_section": null,
+    "expected_keywords": [],
+    "should_refuse": true,
+    "difficulty": "medium",
+    "category": "hallucination_test"
+  },
+  {
+    "id": "HT-003",
+    "question": "What is the CEO's favorite restaurant?",
+    "expected_company": null,
+    "expected_section": null,
+    "expected_keywords": [],
+    "should_refuse": true,
+    "difficulty": "easy",
+    "category": "hallucination_test"
+  }
+]

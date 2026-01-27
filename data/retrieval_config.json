@@ -1,0 +1,24 @@
+{
+  "default_k": 5,
+  "min_similarity": 0.35,
+  "embedding_model": "all-MiniLM-L6-v2",
+  "collection_name": "sec_10k_filings",
+  "available_companies": [
+    "GS",
+    "JPM",
+    "UBS"
+  ],
+  "available_sections": [
+    "Business Overview",
+    "Controls & Procedures",
+    "Credit Risk",
+    "Financial Statements",
+    "General",
+    "Liquidity",
+    "MD&A",
+    "Market Risk",
+    "Operational Risk",
+    "Properties",
+    "Risk Factors"
+  ]
+}

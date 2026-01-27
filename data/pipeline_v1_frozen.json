@@ -1,0 +1,80 @@
+{
+  "version": "1.0.0",
+  "frozen_at": "2026-01-25T22:26:41.970805",
+  "description": "SEC EDGAR 10-K RAG Pipeline v1",
+  "data_collection": {
+    "companies": [
+      "JPM",
+      "GS",
+      "UBS"
+    ],
+    "filing_type": "10-K",
+    "fiscal_year": "2024",
+    "source": "SEC EDGAR",
+    "raw_html_dir": "data/raw_html/",
+    "raw_txt_dir": "data/raw_txt/"
+  },
+  "chunking": {
+    "chunk_size_tokens": 600,
+    "chunk_overlap_tokens": 100,
+    "min_chunk_size_tokens": 100,
+    "total_chunks": 2332
+  },
+  "embedding": {
+    "model": "all-MiniLM-L6-v2",
+    "dimensions": 384,
+    "provider": "sentence-transformers"
+  },
+  "vector_store": {
+    "type": "ChromaDB",
+    "collection_name": "sec_10k_filings",
+    "persist_directory": "data/chroma_db/",
+    "similarity_metric": "cosine"
+  },
+  "retrieval": {
+    "default_k": 5,
+    "min_similarity": 0.35,
+    "embedding_model": "all-MiniLM-L6-v2",
+    "collection_name": "sec_10k_filings",
+    "available_companies": [
+      "GS",
+      "JPM",
+      "UBS"
+    ],
+    "available_sections": [
+      "Business Overview",
+      "Controls & Procedures",
+      "Credit Risk",
+      "Financial Statements",
+      "General",
+      "Liquidity",
+      "MD&A",
+      "Market Risk",
+      "Operational Risk",
+      "Properties",
+      "Risk Factors"
+    ]
+  },
+  "generation": {
+    "supported_providers": [
+      "openai",
+      "gemini",
+      "mock"
+    ],
+    "default_provider": "gemini",
+    "openai_model": "gpt-4o-mini",
+    "gemini_model": "gemini-1.5-flash",
+    "temperature": 0.1,
+    "max_tokens": 1500
+  },
+  "evaluation": {
+    "gold_questions_count": 19,
+    "categories": [
+      "business",
+      "hallucination_test",
+      "capital",
+      "risk_factors",
+      "liquidity"
+    ]
+  }
+}

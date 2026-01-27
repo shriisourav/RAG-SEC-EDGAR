@@ -1,0 +1,129 @@
+[
+  {
+    "query": "What are the main risk factors for JPMorgan Chase?",
+    "answer": "Based on the provided 10-K filing excerpts, here is my analysis:\n\nThe documents discuss various aspects of the companies' operations and risk management practices. \n\nKey findings from the context:\n- The financial institutions maintain comprehensive risk management frameworks\n- Credit risk, market risk, and operational risk are primary concerns\n- Regulatory capital requirements under Basel III are closely monitored\n\n[Source: Based on retrieved 10-K excerpts]\n\nNote: This is a mock response for testing. Set GEMINI_API_KEY or OPENAI_API_KEY for real responses.",
+    "confidence": "high",
+    "citations": [
+      {
+        "company": "JPMorgan Chase",
+        "section": "General",
+        "source_file": "JPM_10K_20241231.txt",
+        "chunk_id": "JPM_0335_03d88503"
+      },
+      {
+        "company": "JPMorgan Chase",
+        "section": "Risk Factors",
+        "source_file": "JPM_10K_20241231.txt",
+        "chunk_id": "JPM_0254_457dbef5"
+      },
+      {
+        "company": "JPMorgan Chase",
+        "section": "Risk Factors",
+        "source_file": "JPM_10K_20241231.txt",
+        "chunk_id": "JPM_0179_a30eca07"
+      },
+      {
+        "company": "JPMorgan Chase",
+        "section": "General",
+        "source_file": "JPM_10K_20241231.txt",
+        "chunk_id": "JPM_0147_c4e417fa"
+      },
+      {
+        "company": "JPMorgan Chase",
+        "section": "Credit Risk",
+        "source_file": "JPM_10K_20241231.txt",
+        "chunk_id": "JPM_0159_1512b029"
+      }
+    ],
+    "num_chunks_retrieved": 5,
+    "companies_in_context": [
+      "JPMorgan Chase"
+    ],
+    "model_used": "mock-llm"
+  },
+  {
+    "query": "How does Goldman Sachs manage credit risk?",
+    "answer": "Based on the provided 10-K filing excerpts, here is my analysis:\n\nThe documents discuss various aspects of the companies' operations and risk management practices. \n\nKey findings from the context:\n- The financial institutions maintain comprehensive risk management frameworks\n- Credit risk, market risk, and operational risk are primary concerns\n- Regulatory capital requirements under Basel III are closely monitored\n\n[Source: Based on retrieved 10-K excerpts]\n\nNote: This is a mock response for testing. Set GEMINI_API_KEY or OPENAI_API_KEY for real responses.",
+    "confidence": "high",
+    "citations": [
+      {
+        "company": "JPMorgan Chase",
+        "section": "Credit Risk",
+        "source_file": "JPM_10K_20241231.txt",
+        "chunk_id": "JPM_0282_437291b5"
+      },
+      {
+        "company": "Goldman Sachs",
+        "section": "Risk Factors",
+        "source_file": "GS_10K_20241231.txt",
+        "chunk_id": "GS_0201_78273ba5"
+      },
+      {
+        "company": "Goldman Sachs",
+        "section": "MD&A",
+        "source_file": "GS_10K_20241231.txt",
+        "chunk_id": "GS_0341_83c324eb"
+      },
+      {
+        "company": "JPMorgan Chase",
+        "section": "Credit Risk",
+        "source_file": "JPM_10K_20241231.txt",
+        "chunk_id": "JPM_0373_7bc5a9ac"
+      },
+      {
+        "company": "JPMorgan Chase",
+        "section": "Credit Risk",
+        "source_file": "JPM_10K_20241231.txt",
+        "chunk_id": "JPM_0284_2efe96f7"
+      }
+    ],
+    "num_chunks_retrieved": 5,
+    "companies_in_context": [
+      "Goldman Sachs",
+      "JPMorgan Chase"
+    ],
+    "model_used": "mock-llm"
+  },
+  {
+    "query": "What are UBS's liquidity requirements?",
+    "answer": "Based on the provided 10-K filing excerpts, here is my analysis:\n\nThe documents discuss various aspects of the companies' operations and risk management practices. \n\nKey findings from the context:\n- The financial institutions maintain comprehensive risk management frameworks\n- Credit risk, market risk, and operational risk are primary concerns\n- Regulatory capital requirements under Basel III are closely monitored\n\n[Source: Based on retrieved 10-K excerpts]\n\nNote: This is a mock response for testing. Set GEMINI_API_KEY or OPENAI_API_KEY for real responses.",
+    "confidence": "high",
+    "citations": [
+      {
+        "company": "UBS Group",
+        "section": "Risk Factors",
+        "source_file": "UBS_10K_20241231.txt",
+        "chunk_id": "UBS_1316_ae868f70"
+      },
+      {
+        "company": "UBS Group",
+        "section": "Liquidity",
+        "source_file": "UBS_10K_20241231.txt",
+        "chunk_id": "UBS_0736_0ee8bdcf"
+      },
+      {
+        "company": "UBS Group",
+        "section": "Liquidity",
+        "source_file": "UBS_10K_20241231.txt",
+        "chunk_id": "UBS_0733_a4cba6a6"
+      },
+      {
+        "company": "UBS Group",
+        "section": "Liquidity",
+        "source_file": "UBS_10K_20241231.txt",
+        "chunk_id": "UBS_0738_fab03c27"
+      },
+      {
+        "company": "UBS Group",
+        "section": "Risk Factors",
+        "source_file": "UBS_10K_20241231.txt",
+        "chunk_id": "UBS_0496_53179ea6"
+      }
+    ],
+    "num_chunks_retrieved": 5,
+    "companies_in_context": [
+      "UBS Group"
+    ],
+    "model_used": "mock-llm"
+  }
+]

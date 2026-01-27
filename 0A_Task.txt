@@ -1,0 +1,52 @@
+Day 1 = get real documents
+Day 2 = index them
+Day 3 = find the right parts
+Day 4 = answer without lying
+Day 5 = prove it works
+
+| Action       | What you actually do                                                                       | Why this matters                   |
+| ------------ | ------------------------------------------------------------------------------------------ | ---------------------------------- |
+| **Action 1** | • Select 3–5 companies (JPM, GS, BAC)<br>• Identify their latest 10-K filings on SEC EDGAR | You need **real, large documents** |
+| **Action 2** | • Download primary 10-K HTML files<br>• Keep originals untouched                           | Auditability & traceability        |
+| **Action 3** | • Store files in `data/raw_html/`                                                          | Preserves source of truth          |
+| **Action 4** | • Convert HTML → clean text (no summaries)<br>• Remove scripts/tables                      | Makes text machine-readable        |
+| **Action 5** | • Save cleaned files in `data/raw_txt/`                                                    | Input for chunking                 |
+| **Action 6** | • Manually open 1–2 text files<br>• Confirm readable sections (Risk, Liquidity)            | Human sanity check                 |
+
+
+| Action       | What you actually do                                                     | Why this matters           |
+| ------------ | ------------------------------------------------------------------------ | -------------------------- |
+| **Action 1** | • Decide chunk size (500–800 tokens)<br>• Decide overlap (50–100 tokens) | Controls retrieval quality |
+| **Action 2** | • Split each 10-K into chunks                                            | Enables semantic search    |
+| **Action 3** | • Attach metadata:<br>– company<br>– section<br>– source file            | Enables citations          |
+| **Action 4** | • Generate embeddings for each chunk                                     | Converts text → vectors    |
+| **Action 5** | • Store embeddings in vector DB (FAISS/Chroma)                           | Fast similarity search     |
+| **Action 6** | • Validate chunk count & size                                            | Prevents context loss      |
+
+
+| Action       | What you actually do                      | Why this matters         |
+| ------------ | ----------------------------------------- | ------------------------ |
+| **Action 1** | • Write retrieval function (top-k search) | Core of RAG              |
+| **Action 2** | • Test with simple questions              | Measure recall           |
+| **Action 3** | • Tune `k` and overlap                    | Reduce noise             |
+| **Action 4** | • Inspect retrieved chunks manually       | Catch retrieval failures |
+| **Action 5** | • Fix bad chunking if needed              | Improves answer quality  |
+
+
+
+| Action       | What you actually do                 | Why this matters      |
+| ------------ | ------------------------------------ | --------------------- |
+| **Action 1** | • Pass retrieved chunks to LLM       | Context injection     |
+| **Action 2** | • Enforce “answer only from context” | Prevent hallucination |
+| **Action 3** | • Add citation requirement           | Audit-ready output    |
+| **Action 4** | • Handle “answer not found” cases    | Production behavior   |
+| **Action 5** | • Test hallucination scenarios       | Safety validation     |
+
+
+| Action       | What you actually do          | Why this matters     |
+| ------------ | ----------------------------- | -------------------- |
+| **Action 1** | • Create 15–20 gold questions | Evaluation set       |
+| **Action 2** | • Run system on all questions | Measure performance  |
+| **Action 3** | • Log failures by type        | Diagnose weaknesses  |
+| **Action 4** | • Improve chunking / prompts  | Iterative refinement |
+| **Action 5** | • Freeze v1 pipeline          | Interview-ready      |

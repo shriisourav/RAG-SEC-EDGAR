@@ -1,0 +1,573 @@
+{
+  "timestamp": "2026-01-25T22:26:41.954564",
+  "total_questions": 19,
+  "passed": 15,
+  "failed": 4,
+  "pass_rate": 0.7894736842105263,
+  "results_by_category": {
+    "risk_factors": {
+      "passed": 4,
+      "failed": 1
+    },
+    "liquidity": {
+      "passed": 2,
+      "failed": 2
+    },
+    "capital": {
+      "passed": 4,
+      "failed": 0
+    },
+    "business": {
+      "passed": 3,
+      "failed": 0
+    },
+    "hallucination_test": {
+      "passed": 2,
+      "failed": 1
+    }
+  },
+  "results_by_difficulty": {
+    "easy": {
+      "passed": 6,
+      "failed": 1
+    },
+    "medium": {
+      "passed": 6,
+      "failed": 3
+    },
+    "hard": {
+      "passed": 3,
+      "failed": 0
+    }
+  },
+  "failure_breakdown": {
+    "wrong_section": 3,
+    "hallucination": 1
+  },
+  "avg_similarity": 0.5852907952509429,
+  "avg_execution_time_ms": 38.21149625276264,
+  "individual_results": [
+    {
+      "question_id": "RF-001",
+      "question": "What are JPMorgan Chase's main risk factors?",
+      "category": "risk_factors",
+      "difficulty": "easy",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "JPMorgan Chase"
+      ],
+      "retrieved_sections": [
+        "Risk Factors",
+        "General"
+      ],
+      "avg_similarity": 0.6746851086616517,
+      "top_similarity": 0.702465832233429,
+      "keywords_found": [
+        "risk",
+        "credit",
+        "market"
+      ],
+      "keywords_missing": [
+        "operational"
+      ],
+      "answer_preview": "risk and control oversight on behalf of jpmorgan chase bank n.a. is primarily the responsibility of the board risk committee and the audit committee, respectively, and, with respect to compensation an",
+      "execution_time_ms": 83.02783966064453
+    },
+    {
+      "question_id": "RF-002",
+      "question": "What credit risks does Goldman Sachs face?",
+      "category": "risk_factors",
+      "difficulty": "easy",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "Goldman Sachs",
+        "JPMorgan Chase"
+      ],
+      "retrieved_sections": [
+        "Credit Risk",
+        "Risk Factors",
+        "Liquidity"
+      ],
+      "avg_similarity": 0.60482839345932,
+      "top_similarity": 0.6379587650299072,
+      "keywords_found": [
+        "credit",
+        "counterparty",
+        "default",
+        "exposure"
+      ],
+      "keywords_missing": [],
+      "answer_preview": "liquidity\n\u2022\nour liquidity, profitability and businesses may be adversely affected by an inability to access the debt capital markets or to sell assets. \u2022\nour businesses have been and may in the future",
+      "execution_time_ms": 28.506755828857422
+    },
+    {
+      "question_id": "RF-003",
+      "question": "How does UBS describe its operational risks?",
+      "category": "risk_factors",
+      "difficulty": "medium",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "JPMorgan Chase",
+        "UBS Group"
+      ],
+      "retrieved_sections": [
+        "Risk Factors",
+        "Operational Risk",
+        "General"
+      ],
+      "avg_similarity": 0.6213943839073182,
+      "top_similarity": 0.64299476146698,
+      "keywords_found": [
+        "operational",
+        "process",
+        "systems",
+        "controls"
+      ],
+      "keywords_missing": [],
+      "answer_preview": "the risk of which is increased with persistently high levels of cyberattack threats; (xviii) restrictions on the ability of ubs group ag, ubs ag and regulated subsidiaries of ubs ag to make payments o",
+      "execution_time_ms": 28.696060180664062
+    },
+    {
+      "question_id": "RF-004",
+      "question": "What market risks are disclosed in the 10-K filings?",
+      "category": "risk_factors",
+      "difficulty": "medium",
+      "passed": false,
+      "failures": [
+        "wrong_section"
+      ],
+      "retrieved_companies": [
+        "Goldman Sachs",
+        "JPMorgan Chase"
+      ],
+      "retrieved_sections": [
+        "Risk Factors",
+        "General"
+      ],
+      "avg_similarity": 0.5466921925544739,
+      "top_similarity": 0.5651923418045044,
+      "keywords_found": [
+        "market",
+        "trading",
+        "volatility",
+        "prices"
+      ],
+      "keywords_missing": [],
+      "answer_preview": "the net cash provided by financing activities primarily reflected cash inflows from deposits (reflecting increases in consumer deposits, brokered certificates of deposit and other deposits, partially ",
+      "execution_time_ms": 293.18809509277344
+    },
+    {
+      "question_id": "RF-005",
+      "question": "Compare the regulatory risks across JPMorgan and Goldman Sachs",
+      "category": "risk_factors",
+      "difficulty": "hard",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "JPMorgan Chase"
+      ],
+      "retrieved_sections": [
+        "General",
+        "Risk Factors"
+      ],
+      "avg_similarity": 0.6588963627815246,
+      "top_similarity": 0.6786600947380066,
+      "keywords_found": [
+        "regulatory",
+        "compliance",
+        "Basel",
+        "capital"
+      ],
+      "keywords_missing": [],
+      "answer_preview": "additionally, there is a pending legal challenge to the manner in which stress testing is administered. refer to litigation and regulatory challenges on pages 6-7 for further information. refer to cap",
+      "execution_time_ms": 25.949954986572266
+    },
+    {
+      "question_id": "LQ-001",
+      "question": "How does JPMorgan manage its liquidity risk?",
+      "category": "liquidity",
+      "difficulty": "easy",
+      "passed": false,
+      "failures": [
+        "wrong_section"
+      ],
+      "retrieved_companies": [
+        "JPMorgan Chase"
+      ],
+      "retrieved_sections": [
+        "Credit Risk",
+        "General",
+        "Financial Statements",
+        "Market Risk"
+      ],
+      "avg_similarity": 0.6862882971763611,
+      "top_similarity": 0.7190391421318054,
+      "keywords_found": [
+        "liquidity",
+        "funding",
+        "cash",
+        "requirements"
+      ],
+      "keywords_missing": [],
+      "answer_preview": "jpmorgan chase bank, n.a. or j.p. morgan securities llc often serves as the sole liquidity or tender option provider for the tob trusts. the liquidity provider\u2019s obligation to perform is conditional a",
+      "execution_time_ms": 10.632991790771484
+    },
+    {
+      "question_id": "LQ-002",
+      "question": "What are UBS's liquidity requirements under Basel III?",
+      "category": "liquidity",
+      "difficulty": "medium",
+      "passed": false,
+      "failures": [
+        "wrong_section"
+      ],
+      "retrieved_companies": [
+        "Goldman Sachs",
+        "UBS Group"
+      ],
+      "retrieved_sections": [
+        "General",
+        "MD&A",
+        "Market Risk"
+      ],
+      "avg_similarity": 0.6485744118690491,
+      "top_similarity": 0.7065104246139526,
+      "keywords_found": [
+        "liquidity",
+        "Basel",
+        "LCR",
+        "NSFR",
+        "ratio"
+      ],
+      "keywords_missing": [],
+      "answer_preview": "notwithstanding\nattempts\nby\nregulators\nto\nalign\ntheir\nefforts,\nthe\nmeasures\nadopted\nor\nproposed\nfor\nbanking\nregulation\ndiffer\nsignificantly\nacross\nthe\nmajor\njurisdictions, making\nit increasingly\ndiffi",
+      "execution_time_ms": 11.95216178894043
+    },
+    {
+      "question_id": "LQ-003",
+      "question": "What liquidity buffers do the banks maintain?",
+      "category": "liquidity",
+      "difficulty": "medium",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "Goldman Sachs",
+        "JPMorgan Chase",
+        "UBS Group"
+      ],
+      "retrieved_sections": [
+        "General",
+        "Liquidity",
+        "Risk Factors"
+      ],
+      "avg_similarity": 0.5886014938354492,
+      "top_similarity": 0.6220105886459351,
+      "keywords_found": [
+        "reserve",
+        "HQLA"
+      ],
+      "keywords_missing": [
+        "buffer",
+        "liquid assets"
+      ],
+      "answer_preview": "the firm\u2019s non-bank subsidiaries are primarily funded from long-term unsecured borrowings and short-term secured borrowings which are primarily securities loaned or sold under repurchase agreements. e",
+      "execution_time_ms": 22.722244262695312
+    },
+    {
+      "question_id": "LQ-004",
+      "question": "How do funding sources differ between the three banks?",
+      "category": "liquidity",
+      "difficulty": "hard",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "Goldman Sachs",
+        "JPMorgan Chase",
+        "UBS Group"
+      ],
+      "retrieved_sections": [
+        "Credit Risk",
+        "General",
+        "Liquidity"
+      ],
+      "avg_similarity": 0.4927980899810791,
+      "top_similarity": 0.5117802023887634,
+      "keywords_found": [
+        "funding",
+        "deposits",
+        "borrowing",
+        "sources"
+      ],
+      "keywords_missing": [],
+      "answer_preview": "we generally distribute our funding products through our own sales force and third-party distributors to a large, diverse creditor base in a variety of markets in the americas, europe and asia. we bel",
+      "execution_time_ms": 10.219097137451172
+    },
+    {
+      "question_id": "CR-001",
+      "question": "What are the regulatory capital requirements for JPMorgan?",
+      "category": "capital",
+      "difficulty": "easy",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "JPMorgan Chase"
+      ],
+      "retrieved_sections": [
+        "General",
+        "Financial Statements"
+      ],
+      "avg_similarity": 0.683806300163269,
+      "top_similarity": 0.7053921222686768,
+      "keywords_found": [
+        "capital",
+        "regulatory",
+        "CET1",
+        "tier 1"
+      ],
+      "keywords_missing": [],
+      "answer_preview": "for each of these risk-based capital ratios, the capital adequacy of the firm and jpmorgan chase bank, n.a. is evaluated against the lower of the standardized or advanced approaches compared to their ",
+      "execution_time_ms": 9.124755859375
+    },
+    {
+      "question_id": "CR-002",
+      "question": "How does Goldman Sachs meet Basel III capital requirements?",
+      "category": "capital",
+      "difficulty": "medium",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "Goldman Sachs",
+        "JPMorgan Chase"
+      ],
+      "retrieved_sections": [
+        "General",
+        "Financial Statements",
+        "Market Risk"
+      ],
+      "avg_similarity": 0.676208782196045,
+      "top_similarity": 0.7067188620567322,
+      "keywords_found": [
+        "Basel",
+        "capital",
+        "ratio",
+        "requirements"
+      ],
+      "keywords_missing": [],
+      "answer_preview": "the goldman sachs group, inc. and subsidiaries\nnotes to consolidated financial statements\nnote 20. regulation and capital adequacy\nthe frb is the primary regulator of group inc., a bank holding compan",
+      "execution_time_ms": 7.228851318359375
+    },
+    {
+      "question_id": "CR-003",
+      "question": "What stress testing requirements do these banks face?",
+      "category": "capital",
+      "difficulty": "medium",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "Goldman Sachs",
+        "JPMorgan Chase",
+        "UBS Group"
+      ],
+      "retrieved_sections": [
+        "Credit Risk",
+        "Risk Factors",
+        "General"
+      ],
+      "avg_similarity": 0.5975072622299195,
+      "top_similarity": 0.6190226078033447,
+      "keywords_found": [
+        "stress",
+        "test",
+        "CCAR",
+        "scenario"
+      ],
+      "keywords_missing": [],
+      "answer_preview": "in addition, potential and unexpected credit losses are reflected in the allocation of credit risk capital and represent the potential volatility of actual losses relative to the established allowance",
+      "execution_time_ms": 7.1887969970703125
+    },
+    {
+      "question_id": "CR-004",
+      "question": "What are the G-SIB buffer requirements mentioned in the filings?",
+      "category": "capital",
+      "difficulty": "hard",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "Goldman Sachs"
+      ],
+      "retrieved_sections": [
+        "General",
+        "Financial Statements",
+        "Market Risk"
+      ],
+      "avg_similarity": 0.6160677194595336,
+      "top_similarity": 0.6616200804710388,
+      "keywords_found": [
+        "G-SIB",
+        "buffer",
+        "systemic",
+        "surcharge"
+      ],
+      "keywords_missing": [],
+      "answer_preview": "failure to satisfy a buffer requirement in full would result in constraints on capital distributions and discretionary executive compensation. the severity of the constraints would depend on the amoun",
+      "execution_time_ms": 72.74007797241211
+    },
+    {
+      "question_id": "BO-001",
+      "question": "What are JPMorgan's main business segments?",
+      "category": "business",
+      "difficulty": "easy",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "JPMorgan Chase"
+      ],
+      "retrieved_sections": [
+        "General",
+        "Financial Statements",
+        "Risk Factors"
+      ],
+      "avg_similarity": 0.6507841229438782,
+      "top_similarity": 0.7226719260215759,
+      "keywords_found": [
+        "segment",
+        "consumer",
+        "commercial",
+        "investment"
+      ],
+      "keywords_missing": [],
+      "answer_preview": "jpmorganchase\u2019s principal bank subsidiary is jpmorgan chase bank, national association (\u201cjpmorgan chase bank, n.a.\u201d), a national banking association with u.s. branches in 48 states and washington, d.c",
+      "execution_time_ms": 10.03575325012207
+    },
+    {
+      "question_id": "BO-002",
+      "question": "How does Goldman Sachs generate revenue?",
+      "category": "business",
+      "difficulty": "medium",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "Goldman Sachs"
+      ],
+      "retrieved_sections": [
+        "Financial Statements",
+        "General",
+        "MD&A",
+        "Liquidity"
+      ],
+      "avg_similarity": 0.5503144025802612,
+      "top_similarity": 0.5933749079704285,
+      "keywords_found": [
+        "revenue",
+        "trading",
+        "fees",
+        "investment banking"
+      ],
+      "keywords_missing": [],
+      "answer_preview": "fair value gains or losses are generally included in market making or other principal transactions. see note 4 for further information about fair value measurements. the goldman sachs group, inc. and ",
+      "execution_time_ms": 53.63607406616211
+    },
+    {
+      "question_id": "BO-003",
+      "question": "What geographic markets does UBS operate in?",
+      "category": "business",
+      "difficulty": "medium",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "UBS Group"
+      ],
+      "retrieved_sections": [
+        "General",
+        "Risk Factors"
+      ],
+      "avg_similarity": 0.5788243532180786,
+      "top_similarity": 0.6382253170013428,
+      "keywords_found": [
+        "geographic",
+        "global",
+        "region",
+        "market"
+      ],
+      "keywords_missing": [],
+      "answer_preview": "ubs ag\noperates\nthrough a global\nbranch network,\nand a significant\nproportion of its\nbusiness activity\nis conducted outside\nswitzerland,\nincluding in the uk,\nthe us, singapore, the hong\nkong sar and o",
+      "execution_time_ms": 10.901927947998047
+    },
+    {
+      "question_id": "HT-001",
+      "question": "What was Apple's revenue in 2024?",
+      "category": "hallucination_test",
+      "difficulty": "easy",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "Goldman Sachs",
+        "JPMorgan Chase",
+        "UBS Group"
+      ],
+      "retrieved_sections": [
+        "General"
+      ],
+      "avg_similarity": 0.3845776319503784,
+      "top_similarity": 0.4125053882598877,
+      "keywords_found": [],
+      "keywords_missing": [],
+      "answer_preview": "see note 15 for information about operating lease liabilities. for leases where the firm will derive no economic benefit from leased space that it has vacated or where the firm has shortened the term ",
+      "execution_time_ms": 9.692907333374023
+    },
+    {
+      "question_id": "HT-002",
+      "question": "What is JPMorgan's stock price prediction for 2026?",
+      "category": "hallucination_test",
+      "difficulty": "medium",
+      "passed": false,
+      "failures": [
+        "hallucination"
+      ],
+      "retrieved_companies": [
+        "JPMorgan Chase"
+      ],
+      "retrieved_sections": [
+        "General",
+        "MD&A",
+        "Liquidity",
+        "Risk Factors"
+      ],
+      "avg_similarity": 0.5746513962745666,
+      "top_similarity": 0.627501904964447,
+      "keywords_found": [],
+      "keywords_missing": [],
+      "answer_preview": "the following table and graph assume simultaneous investments of $100 on december 31, 2019, in jpmorganchase common stock and in each of the above indices. the comparison assumes that all dividends we",
+      "execution_time_ms": 21.5909481048584
+    },
+    {
+      "question_id": "HT-003",
+      "question": "What is the CEO's favorite restaurant?",
+      "category": "hallucination_test",
+      "difficulty": "easy",
+      "passed": true,
+      "failures": [],
+      "retrieved_companies": [
+        "Goldman Sachs",
+        "UBS Group"
+      ],
+      "retrieved_sections": [
+        "General",
+        "Market Risk"
+      ],
+      "avg_similarity": 0.28502440452575684,
+      "top_similarity": 0.2973514795303345,
+      "keywords_found": [],
+      "keywords_missing": [],
+      "answer_preview": "during a\n16-year career\nwith jpmorgan, ms. wong helped build up\nits asia fx, fixed income and\nemerging markets business. she brings extensive experience from serving\nas a member\nof the board\nof direct",
+      "execution_time_ms": 8.983135223388672
+    }
+  ],
+  "recommendations": [
+    "SECTION DETECTION: Improve section classification logic. Add more specific patterns for 10-K section headers.",
+    "HALLUCINATION: Strengthen the system prompt to enforce 'I don't know' responses when context is insufficient."
+  ]
+}
