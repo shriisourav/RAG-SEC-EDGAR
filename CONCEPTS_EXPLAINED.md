@@ -287,6 +287,133 @@ QUERYING (Online - Per Question):
 
 ---
 
+## 🔧 6. Where is RAG Actually Coded? (Implementation Map)
+
+### RAG = R (Retrieval) + A (Augmented) + G (Generation)
+
+**The RAG core is in `D_Generation.py` in the `RAGEngine.query()` method.**
+
+### Complete Implementation Map
+
+| RAG Component | File | Lines | What It Does |
+|---------------|------|-------|--------------|
+| **R - Retrieval** | `C_Retrieval.py` | 100-150 | Semantic search in ChromaDB |
+| **A - Augmentation** | `D_Generation.py` | 330-360 | Format chunks as LLM context |
+| **G - Generation** | `D_Generation.py` | 400-420 | Call LLM with context |
+
+### Visual Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    YOUR RAG PIPELINE                            │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │ A_SEC_EDGAR.py        - Downloads 10-K documents         │  │
+│  │ B_Chunking_Indexing.py - Chunks + Embeddings → ChromaDB  │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                         ↓ PREPROCESSING (done once)             │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │                                                          │  │
+│  │  D_Generation.py (RAGEngine.query method)                │  │
+│  │                                                          │  │
+│  │    ┌─────────────┐   ┌─────────────┐   ┌─────────────┐  │  │
+│  │    │ R:RETRIEVAL │ → │ A:AUGMENT   │ → │ G:GENERATE  │  │  │
+│  │    │             │   │             │   │             │  │  │
+│  │    │ Search      │   │ Format      │   │ Call LLM    │  │  │
+│  │    │ ChromaDB    │   │ Context     │   │ Get Answer  │  │  │
+│  │    │ for top-k   │   │ for LLM     │   │             │  │  │
+│  │    └─────────────┘   └─────────────┘   └─────────────┘  │  │
+│  │         ↑                                                │  │
+│  │    C_Retrieval.py                                        │  │
+│  │    (Retriever class)                                     │  │
+│  │                                                          │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### The Exact RAG Code (D_Generation.py)
+
+```python
+def query(self, question: str, k: int = 5, company: str = None) -> RAGResponse:
+    """
+    Execute a RAG query: retrieve context and generate answer.
+    """
+    
+    # ════════════════════════════════════════════════════════
+    # STEP 1: RETRIEVAL (R) - Find relevant chunks
+    # ════════════════════════════════════════════════════════
+    chunks = self.retriever.retrieve(
+        query=question,
+        k=k,
+        company=company
+    )
+    
+    # ════════════════════════════════════════════════════════
+    # STEP 2: AUGMENTATION (A) - Build context from chunks
+    # ════════════════════════════════════════════════════════
+    context = self._format_context(chunks)  # Combine chunks into prompt
+    user_prompt = self._create_user_prompt(question, context)
+    
+    # ════════════════════════════════════════════════════════
+    # STEP 3: GENERATION (G) - LLM generates answer
+    # ════════════════════════════════════════════════════════
+    answer = self.llm.generate(SYSTEM_PROMPT, user_prompt)
+    
+    return RAGResponse(answer=answer, citations=citations, ...)
+```
+
+### Key Code Sections
+
+#### 1. RETRIEVAL - `C_Retrieval.py`
+```python
+def retrieve(self, query: str, k: int = 5) -> List[Dict]:
+    # Convert query to embedding
+    query_embedding = self.embedding_model.encode([query])
+    
+    # Search ChromaDB for similar chunks
+    results = self.collection.query(
+        query_embeddings=query_embedding,
+        n_results=k
+    )
+    return results
+```
+
+#### 2. AUGMENTATION - `D_Generation.py`
+```python
+def _format_context(self, chunks: List[Dict]) -> str:
+    """Combine retrieved chunks into context for LLM"""
+    context_parts = []
+    for chunk in chunks:
+        context_parts.append(
+            f"[Source: {chunk['company']} - {chunk['section']}]\n"
+            f"{chunk['text']}"
+        )
+    return "\n---\n".join(context_parts)
+```
+
+#### 3. GENERATION - `D_Generation.py`
+```python
+# Generate answer using LLM with context
+answer = self.llm.generate(
+    system_prompt=SYSTEM_PROMPT,  # "Only answer from context..."
+    user_prompt=f"CONTEXT:\n{context}\n\nQUESTION: {question}"
+)
+```
+
+### Summary
+
+**RAG is NOT a single function** - it's the **combination** of:
+
+1. **Retrieval** → Finding relevant documents (ChromaDB search in `C_Retrieval.py`)
+2. **Augmentation** → Adding those documents to the prompt (`D_Generation.py`)
+3. **Generation** → LLM answering with that context (`D_Generation.py`)
+
+**The "magic" happens in `D_Generation.py`** in the `RAGEngine.query()` method where all three steps come together!
+
+---
+
 ## 💡 Interview Tips
 
 ### Common Questions & Answers
@@ -309,6 +436,9 @@ QUERYING (Online - Per Question):
 **Q: How would you scale this?**
 > A: 1) Cloud vector DB (Pinecone/Qdrant), 2) Async processing, 3) Caching frequent queries, 4) Multiple retrieval strategies (hybrid search).
 
+**Q: Where is RAG implemented in your code?**
+> A: The main RAG logic is in `D_Generation.py` in the `RAGEngine.query()` method. It calls retrieval from `C_Retrieval.py`, formats the context, and sends it to the LLM.
+
 ---
 
 ## 📊 Quick Reference Card
@@ -329,6 +459,9 @@ QUERYING (Online - Per Question):
 │                                                                 │
 │  FORMULA:                                                       │
 │  Query → Embed → Search VectorDB → Get Chunks → LLM → Answer    │
+│                                                                 │
+│  CODE LOCATION:                                                 │
+│  D_Generation.py → RAGEngine.query() → The RAG magic!           │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
