@@ -7,7 +7,7 @@ sdk: docker
 app_port: 7860
 pinned: false
 license: mit
-short_description: Ask questions about JPMorgan, Goldman Sachs & UBS 10-K filings
+short_description: AI-powered SEC 10-K filing analysis
 ---
 
 # SEC EDGAR 10-K RAG System
