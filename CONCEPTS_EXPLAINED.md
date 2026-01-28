@@ -1442,7 +1442,528 @@ Above 200K queries/month: Consider self-hosting
 
 ---
 
+## 🔤 19. TikToken & Tokenization
+
+### What is TikToken?
+
+**TikToken** = OpenAI's fast tokenizer library for counting/splitting tokens.
+
+```python
+import tiktoken
+
+# Get the tokenizer for a specific model
+enc = tiktoken.encoding_for_model("gpt-4")
+
+# Count tokens
+text = "What are JPMorgan's main risk factors?"
+tokens = enc.encode(text)
+print(f"Token count: {len(tokens)}")  # Output: 9
+
+# Decode back to text
+decoded = enc.decode(tokens)
+print(decoded)  # "What are JPMorgan's main risk factors?"
+```
+
+### Why Tokenization Matters
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    WHY TOKENS MATTER                            │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  1. COST: You pay per token (input + output)                   │
+│     GPT-4o: $2.50 per 1M input tokens                          │
+│                                                                 │
+│  2. CONTEXT LIMITS: Models have max token limits               │
+│     GPT-4: 128K tokens                                         │
+│     Claude: 200K tokens                                        │
+│                                                                 │
+│  3. CHUNKING: Must fit chunks within limits                    │
+│     If chunk > model limit → ERROR                             │
+│                                                                 │
+│  4. PROMPT ENGINEERING: Know your token budget                 │
+│     System prompt + Context + Question < Limit                 │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Different Tokenizers
+
+| Model Family | Tokenizer | Tokens per Word |
+|--------------|-----------|-----------------|
+| GPT-4, GPT-3.5 | cl100k_base | ~0.75 |
+| GPT-2, GPT-3 | r50k_base | ~0.80 |
+| Llama 2 | SentencePiece | ~0.70 |
+| Claude | Unknown (similar) | ~0.75 |
+
+### Common Token Patterns
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                  TOKEN EXAMPLES                                 │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  "Hello" → 1 token        "JPMorgan" → 2 tokens (JP + Morgan)  │
+│  "AI" → 1 token           "10-K" → 3 tokens (10 + - + K)       │
+│  " the" → 1 token         "cryptocurrency" → 3 tokens          │
+│  "\n" → 1 token           "New York" → 2 tokens                │
+│                                                                 │
+│  RULES OF THUMB:                                                │
+│  • Common words = 1 token                                       │
+│  • Spaces often included in next token                         │
+│  • Numbers each digit = 1 token (123 = 3 tokens)               │
+│  • Punctuation = 1 token each                                  │
+│  • 1 token ≈ 4 characters ≈ 0.75 words                         │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Token Counting in Our Project
+
+```python
+# From B_Chunking_Indexing.py
+import tiktoken
+
+class TokenChunker:
+    def __init__(self, model="gpt-4"):
+        self.encoder = tiktoken.encoding_for_model(model)
+    
+    def count_tokens(self, text: str) -> int:
+        return len(self.encoder.encode(text))
+    
+    def chunk_by_tokens(self, text: str, max_tokens: int = 600):
+        tokens = self.encoder.encode(text)
+        chunks = []
+        for i in range(0, len(tokens), max_tokens):
+            chunk_tokens = tokens[i:i + max_tokens]
+            chunks.append(self.encoder.decode(chunk_tokens))
+        return chunks
+```
+
+---
+
+## 🌡️ 20. LLM Parameters (Temperature, Top-P, etc.)
+
+### Parameter Overview
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                   LLM GENERATION PARAMETERS                     │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  TEMPERATURE (0.0 - 2.0):                                       │
+│  Controls randomness/creativity                                 │
+│  0.0 = Deterministic (same output each time)                   │
+│  0.7 = Balanced (default)                                       │
+│  1.5 = Creative/varied                                          │
+│  2.0 = Very random (may be incoherent)                         │
+│                                                                 │
+│  TOP_P / NUCLEUS SAMPLING (0.0 - 1.0):                          │
+│  Limits token pool to top probability mass                     │
+│  0.1 = Only highest probability tokens                         │
+│  0.9 = Most tokens considered (default)                        │
+│  1.0 = All tokens considered                                   │
+│                                                                 │
+│  TOP_K:                                                         │
+│  Limits to K most probable tokens                              │
+│  Lower = More focused, Higher = More varied                    │
+│                                                                 │
+│  MAX_TOKENS:                                                    │
+│  Maximum output length                                          │
+│                                                                 │
+│  FREQUENCY_PENALTY (-2.0 to 2.0):                              │
+│  Penalizes repeated tokens                                     │
+│                                                                 │
+│  PRESENCE_PENALTY (-2.0 to 2.0):                               │
+│  Encourages new topics                                          │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Temperature Visualization
+
+```
+Temperature = 0 (Deterministic):
+┌─────────────────────────────────────┐
+│ Token probabilities:                │
+│ "bank"     ████████████████ 80%     │
+│ "company"  ███              15%     ← Always picks "bank"
+│ "firm"     █                 5%     │
+└─────────────────────────────────────┘
+
+Temperature = 1.0 (Balanced):
+┌─────────────────────────────────────┐
+│ Token probabilities:                │
+│ "bank"     ████████████ 50%         │
+│ "company"  ████████     33%         ← Sometimes "company"
+│ "firm"     ████         17%         │
+└─────────────────────────────────────┘
+
+Temperature = 2.0 (Creative):
+┌─────────────────────────────────────┐
+│ Token probabilities:                │
+│ "bank"     ██████ 35%               │
+│ "company"  █████  30%               │
+│ "firm"     ████   25%               ← Could pick anything
+│ "entity"   █      10%               │
+└─────────────────────────────────────┘
+```
+
+### Best Practices by Use Case
+
+| Use Case | Temperature | Top_P | Why |
+|----------|-------------|-------|-----|
+| **RAG/Factual Q&A** | 0.0 - 0.3 | 0.9 | Accuracy first |
+| **Code Generation** | 0.0 - 0.2 | 0.95 | Precision needed |
+| **Creative Writing** | 0.7 - 1.0 | 0.9 | Variety desired |
+| **Brainstorming** | 1.0 - 1.5 | 0.95 | Maximum creativity |
+| **Classification** | 0.0 | 1.0 | Deterministic |
+| **Trade Surveillance** | 0.0 - 0.2 | 0.9 | Compliance = accuracy |
+
+### Our RAG Settings
+
+```python
+# D_Generation.py - Low temperature for accuracy
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=messages,
+    temperature=0.1,      # Low for factual accuracy
+    max_tokens=1000,      # Reasonable response length
+    top_p=0.9,            # Standard
+    frequency_penalty=0,  # No penalty
+    presence_penalty=0    # No penalty
+)
+```
+
+---
+
+## ☁️ 21. Azure + Databricks + Copilot Integration
+
+### Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│         AZURE + DATABRICKS + COPILOT ARCHITECTURE               │
+│                  (Trade Surveillance Use Case)                   │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                    AZURE CLOUD                           │   │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐       │   │
+│  │  │Azure OpenAI │ │ Azure Blob  │ │ Azure SQL   │       │   │
+│  │  │(GPT-4, etc.)│ │ Storage     │ │ Database    │       │   │
+│  │  └──────┬──────┘ └──────┬──────┘ └──────┬──────┘       │   │
+│  │         │               │               │               │   │
+│  │  ┌──────┴───────────────┴───────────────┴──────┐       │   │
+│  │  │                DATABRICKS                    │       │   │
+│  │  │  ┌─────────────────────────────────────┐    │       │   │
+│  │  │  │        Unity Catalog                 │    │       │   │
+│  │  │  │  (Data Governance & Lineage)        │    │       │   │
+│  │  │  └─────────────────────────────────────┘    │       │   │
+│  │  │                                              │       │   │
+│  │  │  ┌─────────────┐  ┌─────────────────────┐  │       │   │
+│  │  │  │ Delta Lake  │  │ Vector Search       │  │       │   │
+│  │  │  │ (Trade Data)│  │ (Embeddings)        │  │       │   │
+│  │  │  └─────────────┘  └─────────────────────┘  │       │   │
+│  │  │                                              │       │   │
+│  │  │  ┌─────────────────────────────────────┐    │       │   │
+│  │  │  │     Databricks AI/ML Runtime         │    │       │   │
+│  │  │  │  • MLflow (Model Registry)           │    │       │   │
+│  │  │  │  • Feature Store                      │    │       │   │
+│  │  │  │  • Model Serving                      │    │       │   │
+│  │  │  └─────────────────────────────────────┘    │       │   │
+│  │  └──────────────────────────────────────────────┘       │   │
+│  │                         ↓                                │   │
+│  │  ┌──────────────────────────────────────────────┐       │   │
+│  │  │           GITHUB COPILOT                      │       │   │
+│  │  │  • Code assistance in notebooks               │       │   │
+│  │  │  • SQL query generation                       │       │   │
+│  │  │  • PySpark code completion                    │       │   │
+│  │  └──────────────────────────────────────────────┘       │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Trade Surveillance RAG on Azure + Databricks
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│           TRADE SURVEILLANCE AI PIPELINE                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  DATA SOURCES:                                                  │
+│  ├── Trade data (orders, executions, cancellations)            │
+│  ├── Communications (emails, chats)                            │
+│  ├── Market data (prices, volumes)                             │
+│  └── Regulatory filings (MAR, MiFID II requirements)           │
+│                                                                 │
+│  PIPELINE:                                                      │
+│  1. Ingest → Delta Lake (Bronze layer)                         │
+│  2. Clean/Transform → Delta Lake (Silver layer)                │
+│  3. Feature Engineering → Delta Lake (Gold layer)              │
+│  4. Embed Documents → Databricks Vector Search                 │
+│  5. RAG Query → Azure OpenAI                                   │
+│  6. Alert Generation → Surveillance Dashboard                  │
+│                                                                 │
+│  USE CASES:                                                     │
+│  ├── "Explain why this trade was flagged"                      │
+│  ├── "What regulatory rules apply to this pattern?"            │
+│  ├── "Summarize communications around this trade"              │
+│  └── "Compare this to similar historical cases"                │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Databricks Vector Search Setup
+
+```python
+# Databricks notebook - Setting up Vector Search
+from databricks.vector_search.client import VectorSearchClient
+
+# Initialize client
+vsc = VectorSearchClient()
+
+# Create vector search endpoint
+vsc.create_endpoint(
+    name="trade-surveillance-endpoint",
+    endpoint_type="STANDARD"
+)
+
+# Create vector index
+vsc.create_delta_sync_index(
+    endpoint_name="trade-surveillance-endpoint",
+    index_name="trade_documents_index",
+    source_table_name="gold.trade_documents",
+    primary_key="doc_id",
+    embedding_dimension=1536,
+    embedding_vector_column="embedding",
+    pipeline_type="TRIGGERED"
+)
+```
+
+### Azure OpenAI Integration
+
+```python
+# Databricks notebook - Azure OpenAI RAG
+import openai
+from databricks.vector_search.client import VectorSearchClient
+
+# Configure Azure OpenAI
+openai.api_type = "azure"
+openai.api_base = "https://your-resource.openai.azure.com/"
+openai.api_version = "2024-02-15-preview"
+openai.api_key = dbutils.secrets.get("azure-openai", "api-key")
+
+def trade_surveillance_rag(query: str, trade_id: str):
+    """RAG for trade surveillance queries"""
+    
+    # 1. Get trade context from Delta Lake
+    trade_data = spark.sql(f"""
+        SELECT * FROM gold.trades 
+        WHERE trade_id = '{trade_id}'
+    """).collect()[0]
+    
+    # 2. Vector search for similar patterns
+    vsc = VectorSearchClient()
+    results = vsc.get_index("trade_documents_index").similarity_search(
+        query_text=query,
+        columns=["doc_id", "content", "alert_type"],
+        num_results=5
+    )
+    
+    # 3. Build context
+    context = f"""
+    Trade Details:
+    - Trade ID: {trade_data.trade_id}
+    - Symbol: {trade_data.symbol}
+    - Side: {trade_data.side}
+    - Quantity: {trade_data.quantity}
+    - Price: {trade_data.price}
+    - Time: {trade_data.timestamp}
+    
+    Similar Historical Cases:
+    {format_results(results)}
+    """
+    
+    # 4. Query Azure OpenAI
+    response = openai.ChatCompletion.create(
+        engine="gpt-4",  # Your Azure deployment name
+        messages=[
+            {"role": "system", "content": SURVEILLANCE_PROMPT},
+            {"role": "user", "content": f"Context:\n{context}\n\nQuestion: {query}"}
+        ],
+        temperature=0.1  # Low for compliance accuracy
+    )
+    
+    return response.choices[0].message.content
+```
+
+### GitHub Copilot in Databricks
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              COPILOT USE CASES IN DATABRICKS                    │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  1. SQL QUERY GENERATION                                        │
+│     Comment: "Find all trades flagged for spoofing last week"  │
+│     Copilot generates: SELECT * FROM alerts WHERE ...          │
+│                                                                 │
+│  2. PYSPARK TRANSFORMATIONS                                     │
+│     Comment: "Calculate VWAP for each symbol by hour"          │
+│     Copilot generates: df.groupBy(window(...))...              │
+│                                                                 │
+│  3. ML FEATURE ENGINEERING                                      │
+│     Comment: "Create order imbalance feature"                  │
+│     Copilot generates feature calculation code                 │
+│                                                                 │
+│  4. DOCUMENTATION                                               │
+│     Comment: "Document this surveillance rule"                 │
+│     Copilot generates docstring with regulatory context        │
+│                                                                 │
+│  SETUP:                                                         │
+│  • Install GitHub Copilot extension in VS Code                 │
+│  • Connect VS Code to Databricks workspace                     │
+│  • Use Databricks Connect for local development                │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Complete Trade Surveillance Stack
+
+| Layer | Technology | Purpose |
+|-------|------------|---------|
+| **Ingestion** | Azure Event Hubs + Databricks | Real-time trade streaming |
+| **Storage** | Delta Lake (Bronze/Silver/Gold) | Medallion architecture |
+| **Governance** | Unity Catalog | Data lineage, access control |
+| **Vector Store** | Databricks Vector Search | Semantic search for RAG |
+| **LLM** | Azure OpenAI (GPT-4) | Alert explanation, Q&A |
+| **ML/AI** | MLflow + Model Serving | Anomaly detection models |
+| **Development** | GitHub Copilot | Code assistance |
+| **Orchestration** | Databricks Workflows | Pipeline scheduling |
+| **Monitoring** | Azure Monitor + Databricks | System health |
+
+### Security Considerations for Trade Surveillance
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│               SECURITY & COMPLIANCE REQUIREMENTS                │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  DATA SECURITY:                                                 │
+│  ├── Unity Catalog for fine-grained access control             │
+│  ├── Column-level masking for PII/sensitive data               │
+│  ├── Row-level security by business unit                       │
+│  └── Encryption at rest and in transit                         │
+│                                                                 │
+│  LLM SECURITY:                                                  │
+│  ├── Azure OpenAI in private VNet (no data leaves Azure)       │
+│  ├── No training on your data (API use)                        │
+│  ├── Prompt logging for audit trail                            │
+│  └── Content filtering enabled                                  │
+│                                                                 │
+│  REGULATORY:                                                    │
+│  ├── MiFID II / MAR compliance                                 │
+│  ├── SEC Rule 17a-4 (recordkeeping)                            │
+│  ├── FINRA Requirements                                         │
+│  └── SOC 2 Type II (Azure + Databricks certified)              │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🎯 22. Extended Interview Questions
+
+### Tokenization
+
+**Q: What is TikToken and why is it important?**
+> A: TikToken is OpenAI's tokenizer library. Important for: 1) Cost calculation (pay per token), 2) Ensuring prompts fit context limits, 3) Accurate chunking for RAG.
+
+**Q: How many tokens are in "JPMorgan Chase 10-K 2024"?**
+> A: Approximately 8-10 tokens. "JPMorgan" = 2, "Chase" = 1, "10" = 1, "-" = 1, "K" = 1, "2024" = 1-2.
+
+### LLM Parameters
+
+**Q: When would you use temperature 0 vs 0.7?**
+> A: Temperature 0 for factual accuracy (RAG, classification, compliance). Temperature 0.7+ for creativity (brainstorming, creative writing).
+
+**Q: What's the difference between top_p and temperature?**
+> A: Temperature scales all probabilities. Top_p cuts off the probability distribution (nucleus sampling). Both reduce/increase randomness but differently.
+
+### Azure + Databricks
+
+**Q: How does Unity Catalog help in production ML?**
+> A: Provides data governance (access control, lineage), model registry integration, feature store access control, and cross-workspace sharing.
+
+**Q: Why use Azure OpenAI instead of OpenAI directly?**
+> A: Data stays in your Azure tenant (compliance), SLA guarantees, VNet integration, enterprise security controls, and regional data residency.
+
+**Q: How would you implement RAG for trade surveillance?**
+> A: 1) Store trade/communication data in Delta Lake, 2) Create embeddings with Azure OpenAI, 3) Index in Databricks Vector Search, 4) Query with RAG pattern, 5) Low temperature for compliance accuracy.
+
+---
+
+## 📜 Updated Holy Grail Summary
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│               AI/LLM INTERVIEW HOLY GRAIL                       │
+│                   Complete Reference 2026                       │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  FUNDAMENTALS:                                                  │
+│  ✓ Tokens, Embeddings, Vector DBs                              │
+│  ✓ RAG Pipeline (Retrieve → Augment → Generate)                │
+│  ✓ TikToken tokenization & counting                            │
+│  ✓ LLM Parameters (temperature, top_p, etc.)                   │
+│                                                                 │
+│  ADVANCED:                                                      │
+│  ✓ Hallucination prevention (multi-layer)                      │
+│  ✓ RAG vs Fine-tuning (when to use each)                       │
+│  ✓ RAG vs MCP (MCP can use RAG as tool)                        │
+│                                                                 │
+│  AGENTS:                                                        │
+│  ✓ Agent architecture (LLM + Tools + Memory)                   │
+│  ✓ Multi-agent patterns (hierarchical, peer-to-peer)           │
+│  ✓ Communication methods (shared state, messages)              │
+│                                                                 │
+│  FRAMEWORKS:                                                    │
+│  ✓ LangChain, LangGraph, LlamaIndex                            │
+│  ✓ Ollama, vLLM, llama.cpp                                     │
+│                                                                 │
+│  INFRASTRUCTURE:                                                │
+│  ✓ GPU vs CPU (matrix ops vs sequential)                       │
+│  ✓ Quantization (FP16 → INT8 → INT4)                           │
+│  ✓ VRAM requirements by model size                             │
+│  ✓ Cost optimization strategies                                │
+│                                                                 │
+│  ENTERPRISE:                                                    │
+│  ✓ Azure OpenAI integration                                     │
+│  ✓ Databricks (Delta Lake, Vector Search)                      │
+│  ✓ Unity Catalog (governance)                                  │
+│  ✓ GitHub Copilot in notebooks                                 │
+│                                                                 │
+│  TRADE SURVEILLANCE:                                            │
+│  ✓ RAG for alert explanation                                    │
+│  ✓ Historical pattern matching                                  │
+│  ✓ Regulatory compliance (MiFID II, MAR, SEC)                  │
+│  ✓ Security & data governance                                  │
+│                                                                 │
+│  PROJECT IMPLEMENTATION:                                        │
+│  ✓ SEC EDGAR 10-K RAG Pipeline                                  │
+│  ✓ ChromaDB + Sentence Transformers + Gemini                   │
+│  ✓ FastAPI deployment                                          │
+│  ✓ D_Generation.py → RAGEngine.query()                         │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
 *Last updated: January 2026*
 *Project: SEC EDGAR 10-K RAG Pipeline*
 *Author: Sourav Shrivastava*
 *Reference: AI/LLM Interview Holy Grail*
+*Enterprise: Azure + Databricks + Trade Surveillance*
